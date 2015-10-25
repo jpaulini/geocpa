@@ -26,10 +26,8 @@
 					map: map,
 					title: 'You are here. '
 					});
-				var mybounds = map.getBounds();
-				mybounds.extend(marker);
-				map.fitBounds(mybounds);
-	
+				map.setCenter(myplace);
+				map.setZoom(19);
 			};
 			navigator.geolocation.getCurrentPosition(
 				show_me_in_map
@@ -38,7 +36,6 @@
 			document.getElementById('getValues').onclick = function() {
 				alert('Current Zoom level is ' + map.getZoom());
 				alert('Current center is ' + map.getCenter());
-				alert('The current mapType is ' + map.getMapTypeId());
 			};			
 	};
 })();
