@@ -4,4 +4,6 @@ suite('Global Tests', function(){
 		document.title.match(/\S/) &&
 		document.title.toUpperCase() !== 'TODO' );
 	});
+	test('page has a valid nav',function(){
+		assert(document.getElementsByClassName("nav"));});
 });
