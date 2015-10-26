@@ -10,6 +10,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    {{#if showTests}}
+		  <link rel='stylesheet' href='/vendor/mocha.css'></link>
+	  {{/if}}
+    
   </head>
   <body>
   <nav class="navbar navbar-default" role="navigation">
@@ -48,7 +53,23 @@
       </form>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
-</nav>	
+</nav>
+  <div class="row">	
     {{{body}}}
+   </div>
+   {{#if showTests}}
+    <div id="mocha"></div>
+	   <script src="vendor/mocha.js"></script>
+	   <script src="vendor/chai.js"></script>
+		  <script>
+  			mocha.ui('tdd');
+	   		var assert = chai.assert;
+		  </script>
+	   <script src='/qa/tests-global.js'></script>
+	   {{#if pageTestScript}}
+	   	<script src="{{pageTestScript}}"></script>
+	   {{/if}}
+	   <script>mocha.run();</script>
+    {{/if}}
   </body>
 </html>
