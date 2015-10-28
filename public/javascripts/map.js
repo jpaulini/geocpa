@@ -55,7 +55,7 @@ function detectBrowser() {
 
   if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
     mapdiv.style.width = '100%';
-    mapdiv.style.height = '100%';
+    mapdiv.style.height = '400px';
   } else {
     mapdiv.style.height = '800px';
   }
