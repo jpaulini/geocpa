@@ -7,7 +7,8 @@ function initMap() {
 			var options = {
 	    					zoom: 4,
 	    					center: new google.maps.LatLng(-34.0, -58.0),
-	    					mapTypeId: google.maps.MapTypeId.ROADMAP
+	    					mapTypeId: google.maps.MapTypeId.ROADMAP,
+							disableDefaultUI: true
 	    			};
 
 			// Creating the map
@@ -16,36 +17,47 @@ function initMap() {
 
   			// Try HTML5 geolocation.
   			if (navigator.geolocation) {
-    		navigator.geolocation.getCurrentPosition(function(position) {
-      		var pos = {
-        		lat: position.coords.latitude,
-        		lng: position.coords.longitude
-      		};
+    			navigator.geolocation.getCurrentPosition(function(position) {
+      			var pos = {
+        			lat: position.coords.latitude,
+        			lng: position.coords.longitude
+      			};
 
-      		infoWindow.setPosition(pos);
-      		infoWindow.setContent('Estás aquí.');
-      		map.setCenter(pos);
-			map.setZoom(19);
-    		}, function() {
-      			handleLocationError(true, infoWindow, map.getCenter());
+      			infoWindow.setPosition(pos);
+      			infoWindow.setContent('Estás aquí.');
+      			map.setCenter(pos);
+				map.setZoom(19);
+    			}, function() {
+      				handleLocationError(true, infoWindow, map.getCenter());
 				
-    		});
+    			});
   			} else {
     			// Browser doesn't support Geolocation
     			handleLocationError(false, infoWindow, map.getCenter());
   			}
+			// Checking zoom values
+			map.addListener('zoom_changed', function(){
+				infoWindow.setPosition(map.getCenter());
+				if(map.getZoom()<19){
+					infoWindow.setContent('Acerque el zoom al lugar');
+				} else {
+					infoWindow.setContent('Centre el mapa en el lugar')
+				}
+			});
+			
 			// Getting values
 			document.getElementById('getValues').onclick = function() {
 				alert('Current Zoom level is ' + map.getZoom());
 				alert('Current center is ' + map.getCenter());
 			};			
 	};
+	
 };
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(browserHasGeolocation ?
-                        'Error: No se pudo detectar su ubicación.' :
+                        'Acerque el zoom al lugar que desea registrar' :
                         'Error: Algo falló.');
 }
 
