@@ -54,8 +54,6 @@ function initMap() {
 			document.getElementById('getValues').onclick = function() {
 				alert('Current Zoom level is ' + map.getZoom());
 				alert('Current center is ' + map.getCenter());
-				alert('Current center is ' + map.getCenter().lat());
-				alert('Current center is ' + map.getCenter().lng());
 			};			
 	};
 	

@@ -44,8 +44,8 @@ var cpa = new CPA(azure.createTableService(accountName, accountKey), tableName, 
 var cpaList = new CPAList(cpa);
 
 app.get('/list', cpaList.show.bind(cpaList));
-app.post('/addcpa', cpaList.add.bind(cpaList));
-app.post('/verifycpa', cpaList.verify.bind(CPAList));
+app.post('/add', cpaList.add.bind(cpaList));
+app.post('/verify', cpaList.verify.bind(cpaList));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

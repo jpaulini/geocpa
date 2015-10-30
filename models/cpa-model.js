@@ -33,6 +33,7 @@ CPA.prototype = {
     // use entityGenerator to set types
     // NOTE: RowKey must be a string type, even though
     // it contains a GUID in this example.
+    console.log(item);
     var itemDescriptor = {
       PartitionKey: entityGen.String(self.partitionKey),
       RowKey: entityGen.String(uuid()),

@@ -13,13 +13,13 @@ CPAList.prototype = {
     var query = new azure.TableQuery()
       .where('verified eq ?', false);
     self.CPA.find(query, function itemsFound(error, items) {
-      res.render('index',{title: 'CPA List ', cpas: items});
+      res.render('list',{title: 'CPA List ', cpas: items});
     });
   },
 
   add: function(req,res) {
     var self = this
-    var item = req.body.item;
+    var item = req.body;
     self.CPA.addItem(item, function itemAdded(error) {
       if(error) {
         throw error;
