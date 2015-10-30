@@ -35,20 +35,27 @@ function initMap() {
     			// Browser doesn't support Geolocation
     			handleLocationError(false, infoWindow, map.getCenter());
   			}
-			// Checking zoom values
-			map.addListener('zoom_changed', function(){
+			// Checking map values
+			
+			 function updateMap(){
 				infoWindow.setPosition(map.getCenter());
 				if(map.getZoom()<19){
 					infoWindow.setContent('Acerque el zoom al lugar');
 				} else {
-					infoWindow.setContent('Centre el mapa en el lugar')
+					infoWindow.setContent('Centre el mapa en el lugar');
+					document.getElementById("cpa_lat").value = map.getCenter().lat();
+					document.getElementById("cpa_lng").value = map.getCenter().lng();
 				}
-			});
+			};
+			map.addListener('zoom_changed',updateMap);
+			map.addListener('dragend',updateMap);
 			
 			// Getting values
 			document.getElementById('getValues').onclick = function() {
 				alert('Current Zoom level is ' + map.getZoom());
 				alert('Current center is ' + map.getCenter());
+				alert('Current center is ' + map.getCenter().lat());
+				alert('Current center is ' + map.getCenter().lng());
 			};			
 	};
 	
