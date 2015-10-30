@@ -4,7 +4,7 @@ var async = require('async');
 module.exports = CPAList;
 
 function CPAList(cpa) {
-  this.cpa = cpa;
+  this.CPA = cpa;
 }
 
 CPAList.prototype = {
@@ -12,15 +12,15 @@ CPAList.prototype = {
     self = this;
     var query = new azure.TableQuery()
       .where('verified eq ?', false);
-    self.task.find(query, function itemsFound(error, items) {
-      res.render('index',{title: 'CPA List ', tasks: items});
+    self.CPA.find(query, function itemsFound(error, items) {
+      res.render('index',{title: 'CPA List ', cpas: items});
     });
   },
 
   add: function(req,res) {
     var self = this
     var item = req.body.item;
-    self.task.addItem(item, function itemAdded(error) {
+    self.CPA.addItem(item, function itemAdded(error) {
       if(error) {
         throw error;
       }
@@ -31,8 +31,8 @@ CPAList.prototype = {
   verify: function(req,res) {
     var self = this;
     var verifiedCPAs = Object.keys(req.body);
-    async.forEach(verifiedCPAs, function taskIterator(verifiedCPA, callback) {
-      self.task.updateItem(verifiedCPA, function itemsUpdated(error) {
+    async.forEach(verifiedCPAs, function cpaIterator(verifiedCPA, callback) {
+      self.CPA.updateItem(verifiedCPA, function itemsUpdated(error) {
         if(error){
           callback(error);
         } else {

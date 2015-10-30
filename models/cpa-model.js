@@ -11,6 +11,7 @@ function CPA(storageClient, tableName, partitionKey) {
   this.storageClient.createTableIfNotExists(tableName, function tableCreated(error) {
     if(error) {
       throw error;
+      console.log(error);
     }
   });
 };

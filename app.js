@@ -2,7 +2,7 @@
 var azure = require('azure-storage');
 var nconf = require('nconf');
 nconf.env()
-     .file({ file: '../config.json', search: true });
+     .file({ file: 'config.json', search: true });
 var tableName = nconf.get("TABLE_NAME");
 var partitionKey = nconf.get("PARTITION_KEY");
 var accountName = nconf.get("STORAGE_NAME");
@@ -40,10 +40,10 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 var CPAList = require('./routes/cpalist');
 var CPA = require('./models/cpa-model.js');
-var cpa = new CPAk(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+var cpa = new CPA(azure.createTableService(accountName, accountKey), tableName, partitionKey);
 var cpaList = new CPAList(cpa);
 
-app.get('/list', cpaList.show.bind(CPAList));
+app.get('/list', cpaList.show.bind(cpaList));
 app.post('/addcpa', cpaList.add.bind(cpaList));
 app.post('/verifycpa', cpaList.verify.bind(CPAList));
 
