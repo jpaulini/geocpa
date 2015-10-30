@@ -1,3 +1,13 @@
+//Azure set up
+var azure = require('azure-storage');
+var nconf = require('nconf');
+nconf.env()
+     .file({ file: '../config.json', search: true });
+var tableName = nconf.get("TABLE_NAME");
+var partitionKey = nconf.get("PARTITION_KEY");
+var accountName = nconf.get("STORAGE_NAME");
+var accountKey = nconf.get("STORAGE_KEY");
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -28,7 +38,14 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', routes);
-app.use('/users', users);
+var CPAList = require('./routes/cpalist');
+var CPA = require('./models/cpa-model.js');
+var cpa = new CPAk(azure.createTableService(accountName, accountKey), tableName, partitionKey);
+var cpaList = new CPAList(cpa);
+
+app.get('/list', cpaList.show.bind(CPAList));
+app.post('/addcpa', cpaList.add.bind(cpaList));
+app.post('/verifycpa', cpaList.verify.bind(CPAList));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
