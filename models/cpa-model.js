@@ -33,20 +33,26 @@ CPA.prototype = {
     // use entityGenerator to set types
     // NOTE: RowKey must be a string type, even though
     // it contains a GUID in this example.
-    var itemDescriptor = {
-      PartitionKey: entityGen.String(self.partitionKey),
-      RowKey: entityGen.String(uuid()),
-	  name: entityGen.String(item.name),
-      lat: entityGen.String(item.lat),
-	  lng: entityGen.String(item.lng),
-      verified: entityGen.Boolean(false)
-    };
-    self.storageClient.insertEntity(self.tableName, itemDescriptor, function entityInserted(error) {
-      if(error){  
-        callback(error);
-      }
-      callback(null);
-    });
+    if( parseFloat(item.lat)!==NaN && parseFloat(item.lng)!==NaN ){
+          var itemDescriptor = {
+            PartitionKey: entityGen.String(self.partitionKey),
+            RowKey: entityGen.String(uuid()),
+	          name: entityGen.String(item.name),
+            lat: entityGen.String(item.lat),
+	          lng: entityGen.String(item.lng),
+            verified: entityGen.Boolean(false)
+          };
+          self.storageClient.insertEntity(self.tableName, itemDescriptor, function entityInserted(error) {
+            if(error){  
+                callback(error);
+            }
+            callback(null);
+          });
+      
+    } else {
+      callback(new Error("Validation error!") );
+    }
+
   },
 
   updateItem: function(rKey, callback) {
