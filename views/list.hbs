@@ -1,9 +1,25 @@
 <body>
 <div class="row">
-  {{#each cpas}}
-  <span>{{name}}</span>
-  {{else}}
-     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">No hay códigos para mostrar.</span>
-   {{/each}}
+ 
+    <table class="table table-striped">
+      <thead>
+        <th>Código</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Verificado?</th>
+        </thead>
+        <tbody>
+   {{#each cpas}}
+      <tr>      
+       <td>{{name._}}</td>
+       <td>{{lat._}}</td>
+       <td>{{lng._}}</td>
+       <td>{{verified._}}</td>
+     </tr>
+    {{else}}
+     <tr> No hay códigos para mostrar.</tr>
+    {{/each}}
+        </tbody>
+        </table>
   </div>
 </body>
