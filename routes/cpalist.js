@@ -33,19 +33,21 @@ CPAList.prototype = {
           //throw error;
           req.session.flash ={
            type: "danger",
-           intro: "Validation error",
+           intro: "Validation error: ",
             message: error
           }
+          res.redirect(303, '/');
         }
-        res.redirect('/');
+        return res.redirect('/');
         });
     } else {
       //validation error
       req.session.flash ={
         type: "danger",
-        intro: "Validation error",
+        intro: "Error de validación: ",
         message: "El código postal no es válido."
       }
+      return res.redirect(303, '/');
     }
   },
 

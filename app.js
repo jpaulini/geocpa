@@ -7,6 +7,7 @@ var tableName = nconf.get("TABLE_NAME");
 var partitionKey = nconf.get("PARTITION_KEY");
 var accountName = nconf.get("STORAGE_NAME");
 var accountKey = nconf.get("STORAGE_KEY");
+var cookieSecret = nconf.get("COOKIE_SECRET");
 
 var express = require('express');
 var path = require('path');
@@ -25,6 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 var hbs = require('hbs');
 
+
 hbs.registerHelper('section', function(name, options) {
    if(!this._sections) this._sections= {};
    this._sections[name] = options.fn(this);
@@ -37,11 +39,12 @@ hbs.registerHelper('section', function(name, options) {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(cookieSecret));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')());
 
 app.use(function(req,res,next){
-  res.local.flash = req.session.flash;
+  res.locals.flash = req.session.flash;
   delete req.session.flash;
   next();
 });
