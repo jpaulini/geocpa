@@ -37,7 +37,7 @@ CPA.prototype = {
           var itemDescriptor = {
             PartitionKey: entityGen.String(self.partitionKey),
             RowKey: entityGen.String(uuid()),
-	          name: entityGen.String(item.name),
+	          name: entityGen.String(item.name.toUpperCase()),
             lat: entityGen.String(item.lat),
 	          lng: entityGen.String(item.lng),
             verified: entityGen.Boolean(false)
