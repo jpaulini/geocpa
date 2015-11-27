@@ -1,5 +1,6 @@
 var azure = require('azure-storage');
 var async = require('async');
+var CPA_REGEX = '/(^[a-z]{1}\d{4}[a-z]{3}$|^\d{4}$)/gmi'
 
 module.exports = CPAList;
 
@@ -20,12 +21,32 @@ CPAList.prototype = {
   add: function(req,res) {
     var self = this
     var item = req.body;
-    self.CPA.addItem(item, function itemAdded(error) {
-      if(error) {
-        throw error;
+    // postal code regex
+    var re = /(^[a-z]{1}\d{4}[a-z]{3}$|^\d{4}$)/gi;
+    
+    //validate
+    if (parseFloat(item.lat)!==NaN &&
+        parseFloat(item.lng)!==NaN &&
+        item.name.match(re)  ){
+        self.CPA.addItem(item, function itemAdded(error) {
+        if(error) {
+          //throw error;
+          req.session.flash ={
+           type: "danger",
+           intro: "Validation error",
+            message: error
+          }
+        }
+        res.redirect('/');
+        });
+    } else {
+      //validation error
+      req.session.flash ={
+        type: "danger",
+        intro: "Validation error",
+        message: "El código postal no es válido."
       }
-      res.redirect('/');
-    });
+    }
   },
 
   verify: function(req,res) {

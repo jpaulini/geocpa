@@ -48,7 +48,13 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-  <div id="msg" class="alert alert-danger" role="alert" hidden>...</div>
+{{#if flash}}
+<div class="alert alert-dismissible alert-{{flash.type}}">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>{{flash.intro}}</strong>{{{flash.message}}}
+</div>
+{{/if}}
+
   <div class="row">	
     {{{body}}}
    </div>
