@@ -22,7 +22,7 @@ CPAList.prototype = {
     var self = this
     var item = req.body;
     // postal code regex
-    var re = /(^[a-z]{1}\d{4}[a-z]{3}$|^\d{4}$)/gi;
+    var re = /(^[a-z]{1}[1-9]\d{3}[a-z]{3}$|^[1-9]\d{3}$)/gi;
     var msg = {
       type: "success",
       intro: " ",
