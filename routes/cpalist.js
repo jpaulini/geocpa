@@ -23,6 +23,11 @@ CPAList.prototype = {
     var item = req.body;
     // postal code regex
     var re = /(^[a-z]{1}\d{4}[a-z]{3}$|^\d{4}$)/gi;
+    var msg = {
+      type: "success",
+      intro: " ",
+      message: "Guardado."
+    };
     
     //validate
     if (parseFloat(item.lat)!==NaN &&
@@ -31,24 +36,23 @@ CPAList.prototype = {
         self.CPA.addItem(item, function itemAdded(error) {
         if(error) {
           //throw error;
-          req.session.flash ={
+          msg ={
            type: "danger",
            intro: "Validation error: ",
             message: error
           }
-          res.redirect(303, '/');
         }
-        return res.redirect('/');
         });
     } else {
       //validation error
-      req.session.flash ={
+      msg ={
         type: "danger",
         intro: "Error de validación: ",
         message: "El código postal no es válido."
       }
-      return res.redirect(303, '/');
     }
+    req.session.flash = msg;
+    res.redirect(303, '/');
   },
 
   verify: function(req,res) {
