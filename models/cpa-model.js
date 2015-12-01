@@ -17,13 +17,34 @@ function CPA(storageClient, tableName, partitionKey) {
 };
 
 CPA.prototype = {
+        /* continuationToken:
+         * {"nextPartitionKey":"1!8!Z2VvY3Bh",
+         *  "nextRowKey":"1!48!MjNhMDZiNjUtZmM0MC00ZDk3LWE3YWMtMWIxOTE0MGNkNTYz",
+         *  "targetLocation":0}
+         */
   find: function(query, callback) {
     self = this;
+    function nextPage(entries, continuationToken, callback){
+      continuationToken.getNextPage(function(error, results, newContinuationToken){
+        entries = entries.concat(results);
+        if(newContinuationToken.nextPartitionKey){
+          nextPage(entries,newContinuationToken, callback)
+        }  else {
+          callback(entries)
+        }
+      })
+    }; //end function nextPage
+    
     self.storageClient.queryEntities(this.tableName, query, null, function entitiesQueried(error, result) {
       if(error) {
         callback(error);
       } else {
-        callback(null, result.entries);
+        if(result.continuationToken){
+          nextPage(result.entries, result.continuationToken.nextPartitionKey, callback);
+        } else {
+          callback(null, result.entries);
+        }
+        
       }
     });
   },
