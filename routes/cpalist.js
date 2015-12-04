@@ -12,7 +12,7 @@ CPAList.prototype = {
   show: function(req, res) {
     self = this;
     var query = new azure.TableQuery()
-      .where('verified eq ?', false);
+      .where('lng ne ?', "");
     self.CPA.find(query, function itemsFound(error, items) {
       res.render('list',{title: 'CPA List ', cpas: items});
     });

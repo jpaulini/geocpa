@@ -23,14 +23,15 @@ CPA.prototype = {
          *  "targetLocation":0}
          */
   find: function(query, callback) {
-    self = this;
-    function nextPage(entries, continuationToken, callback){
-      continuationToken.getNextPage(function(error, results, newContinuationToken){
-        entries = entries.concat(results);
-        if(newContinuationToken.nextPartitionKey){
-          nextPage(entries,newContinuationToken, callback)
+    var self = this;
+    
+    function nextPage(tb, entries, continuationToken, callback){
+      self.storageClient.queryEntities(tb, query, continuationToken ,function(error, result){
+        entries = entries.concat(result.entries);
+        if(result.continuationToken){
+          nextPage(tb, entries, result.continuationToken, callback)
         }  else {
-          callback(entries)
+          callback(null, entries)
         }
       })
     }; //end function nextPage
@@ -40,7 +41,7 @@ CPA.prototype = {
         callback(error);
       } else {
         if(result.continuationToken){
-          nextPage(result.entries, result.continuationToken.nextPartitionKey, callback);
+          nextPage(self.tableName, result.entries, result.continuationToken, callback);
         } else {
           callback(null, result.entries);
         }
